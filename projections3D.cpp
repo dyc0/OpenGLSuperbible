@@ -3,6 +3,7 @@
 #include <SOIL/SOIL.h>
 #include <bits/chrono.h>
 #include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/vector_float3.hpp>
 #include <glm/glm.hpp>
@@ -179,13 +180,15 @@ class AppVertices: public Application
 
 	void render(double currentTime) override
 	{
+		trans = glm::mat4(1.0f);
+
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		tNow = std::chrono::high_resolution_clock::now();
 		time = std::chrono::duration_cast<std::chrono::duration<float>>(tNow - tStart).count();
 
-		trans = glm::rotate(trans, time/1000 + glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		trans = glm::rotate(trans, time+ glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 		glUniformMatrix4fv(uniFlip, 1, GL_FALSE, glm::value_ptr(flip));
 
